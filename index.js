@@ -13,5 +13,7 @@ app.get('/', function(request, response){
 });
 
 io.on('connection', function(socket){
-	console.log('A connection was made.');
+	socket.on('chat.message', function(message) {
+		console.log('New Message: ' + message);
+	});
 });

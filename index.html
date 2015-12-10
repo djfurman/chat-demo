@@ -6,7 +6,7 @@
 </head>
 <body id="chat">
 	<form>
-		<input>
+		<input v-model="message">
 		<button @click="send">Send</button>
 	</form>
 
@@ -18,9 +18,13 @@
 		new Vue({
 			el: '#chat',
 
+			data:{
+				message: ''
+			},
+
 			methods: {
 				send: function(e) {
-					alert('send');
+					socket.emit('chat.message', this.message);
 
 					e.preventDefault();
 				}

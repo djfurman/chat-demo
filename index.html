@@ -5,6 +5,9 @@
 	<title>Title</title>
 </head>
 <body id="chat">
+	<ul id="messages">
+		<li v-for="message in messages">{{ message }}</li>
+	</ul>
 	<form>
 		<input v-model="message">
 		<button @click="send">Send</button>
@@ -19,12 +22,21 @@
 			el: '#chat',
 
 			data:{
-				message: ''
+				message: '',
+				messages: []
+			},
+
+			ready: function() {
+				socket.on('chat.message', function(message) {
+					this.messages.push(message);
+				}.bind(this));
 			},
 
 			methods: {
 				send: function(e) {
 					socket.emit('chat.message', this.message);
+
+					this.message = '';
 
 					e.preventDefault();
 				}
